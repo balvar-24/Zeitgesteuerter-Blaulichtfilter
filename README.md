@@ -1,5 +1,39 @@
+# Scheduled Blue Light Filter [eng]
 
-# Zeitgesteuerter Blaulichtfilter
+This program automatically applies a blue light filter
+on Linux desktops. It is controlled using dedicated systemd timers,
+which trigger a service that runs a bash script.
+
+## Features
+
+1. Automatic blue light filter activation on login
+2. Time-based adjustments via systemd timer:
+   - 7:00 AM – 7:00 PM → `redshift -O 6000`
+   - 7:00 PM – 10:00 PM → `redshift -O 4300`
+   - 10:00 PM – 7:00 AM → `redshift -O 3600`
+3. Multi-monitor support (via `xrandr`)
+4. Bash script to automatically set redshift based on time
+5. Installation and uninstallation scripts for easy setup
+
+## Requirements
+
+1. Linux (tested on Linux Mint 21.3 "Virginia" Xfce)
+2. X11 support
+3. `redshift`
+4. `xrandr` (for multi-monitor support)
+5. Systemd user services enabled
+
+## Installation
+
+1. Clone the GitHub repository: `git clone https://github.com/balvar-24/Zeitgesteuerter-Blaulichtfilter.git`
+2. Make `install.sh` and `uninstall.sh` executable: `chmod +x install.sh uninstall.sh`
+3. Run the installation script: `./install.sh` 
+
+To uninstall, simply run `uninstall.sh`. All dependent services, timers, and configuration files will be removed.
+
+---
+
+# Zeitgesteuerter Blaulichtfilter [ger]
 
 Das angefügte Programm setzt automatisiert einen Blaulichtfilter
 auf Linux-Desktops.
