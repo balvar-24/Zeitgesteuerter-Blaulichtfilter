@@ -1,6 +1,6 @@
 [Timer]
 Unit=redshift-timestamped.service
-#Einmalig nach Login direkt ausführen
+#Executed once after login
 OnActiveSec=20
 Persistent=false
 
