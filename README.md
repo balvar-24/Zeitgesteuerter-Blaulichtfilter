@@ -11,17 +11,14 @@ which trigger a service that runs a bash script.
    - 7:00 AM – 7:00 PM → `redshift -O 6000`
    - 7:00 PM – 10:00 PM → `redshift -O 4300`
    - 10:00 PM – 7:00 AM → `redshift -O 3600`
-3. Multi-monitor support (via `xrandr`)
-4. Bash script to automatically set redshift based on time
-5. Installation and uninstallation scripts for easy setup
+3. Bash script to automatically set redshift based on time
+4. Installation and uninstallation scripts for easy setup
 
 ## Requirements
 
 1. Linux (tested on Linux Mint 21.3 "Virginia" Xfce)
 2. X11 support
-3. `redshift`
-4. `xrandr` (for multi-monitor support)
-5. Systemd user services enabled
+3. Systemd user services enabled
 
 ## Installation
 
@@ -47,17 +44,14 @@ die einen Service auslösen, der wiederum ein bash Skript ausführt.
 - 7-19  Uhr  -> redshift -O 6000
 - 19-22 Uhr -> redshift -O 4300
 - 22-7  Uhr  -> redshift -O 3600
-3. Multi-Monitor Unterstützung (über "xrandr")
-4. Bash-Skript zur automatisierten redshift-Setzung abhängig der Uhrzeit
-5. Installations- und Deinstallationsskripte für einfache Einrichtung
+3. Bash-Skript zur automatisierten redshift-Setzung abhängig der Uhrzeit
+4. Installations- und Deinstallationsskripte für einfache Einrichtung
 
 ## Anforderungen:
 
 1. Linux (getestet unter Linux Mint 21.3 "Virginia" Xfce)
 2. X11 Unterstützung
-3. "redshift"
-4. "xrandr" (Multi-Monitor Unterstützung)
-5. Systemd-User-Services aktiviert
+3. Systemd user Services aktiviert
 
 ## Installation:
 
