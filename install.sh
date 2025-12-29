@@ -1,98 +1,75 @@
 #!/bin/bash
-#Installationsskript für Redshift Zeitsteuerung
+#Installationscript for redshift time sheduling
 
 set -e
 
-echo "╔═══════════════════════════════════╗"
-echo "║Redshift Zeitsteuerung Installation║"
-echo "╚═══════════════════════════════════╝"
+echo "╔══════════════════════════════════╗"
+echo "║Redshift time control installation║"
+echo "╚══════════════════════════════════╝"
 echo ""
 
-#Prüfen ob redshift installiert ist
+#Check if redshift is installed
 if ! command -v redshift &> /dev/null; then
-    echo "Warnung: redshift ist nicht installiert"
-    echo "Bitte installieren mit: sudo apt install redshift"
+    echo "Warning: redshift is not installed"
+    echo "Please install it with: sudo apt install redshift"
     echo ""
-    read -p "Trotzdem fortfahren? (j/n) " -n 1 -r
+    read -p "Continue anyway? (j/n) " -n 1 -r
     echo
     if [[ ! $REPLY =~ ^[Jj]$ ]]; then
         exit 1
     fi
 fi
 
-#Prüfen ob xrandr verfügbar ist (für Multi-Monitor)
-if ! command -v xrandr &> /dev/null; then
-    echo "Warnung: xrandr ist nicht installiert"
-    echo "Wird für Multi-Monitor-Unterstützung benötigt"
-    echo "Installieren mit: sudo apt install x11-xserver-utils"
-    echo ""
-fi
-
-#Verzeichnisse erstellen
-echo "Erstelle Verzeichnisse..."
+#Create directories
+echo "Creating directories..."
 mkdir -p ~/.local/bin
 mkdir -p ~/.config/systemd/user
 
-#Script kopieren
-echo "Kopiere Script..."
+#Copy scripts
+echo "Copying scripts..."
 cp redshift-timestamped.sh ~/.local/bin/
 chmod +x ~/.local/bin/redshift-timestamped.sh
-echo "Script installiert: ~/.local/bin/redshift-timestamped.sh"
+echo "Script installed: ~/.local/bin/redshift-timestamped.sh"
 
-#Systemd-Dateien kopieren
-echo "Kopiere systemd-Dateien..."
+#Copy systemd-files
+echo "Copying systemd-files..."
 cp systemd/redshift-timestamped.service ~/.config/systemd/user/
 cp systemd/redshift-timestamped.timer ~/.config/systemd/user/
 cp systemd/redshift-login.timer ~/.config/systemd/user/
-echo "Service-Dateien installiert"
+echo "Service files installed"
 
-#Systemd neu laden
-echo "Lade systemd neu..."
+#Reload systemd
+echo "Reloding systemd..."
 systemctl --user daemon-reload
 
-#Services aktivieren
-echo "Aktiviere Services..."
+#Enable services
+echo "Enabling services..."
 systemctl --user enable redshift-timestamped.service
 systemctl --user enable redshift-timestamped.timer
 systemctl --user enable redshift-login.timer
 
-#Timer starten
-echo "Starte Timer..."
+#Start timer
+echo "Starting timer..."
 systemctl --user start redshift-timestamped.timer 2>/dev/null || true
 
-#Initiales Setup ausführen
-echo "Führe initiales Setup aus..."
-#Kurz warten damit Display erkannt wird
-sleep 2
+#Start service
+echo "Starting service..."
 systemctl --user start redshift-timestamped.service 2>/dev/null || true
 
-#Warte auf Abschluss und zeige Ergebnis
-sleep 2
-if systemctl --user is-active --quiet redshift-timestamped.service; then
-    echo "Redshift erfolgreich aktiviert"
-    #Zeige gefundene Bildschirme
-    if command -v xrandr &> /dev/null; then
-        SCREENS=$(xrandr --query 2>/dev/null | grep " connected" | cut -d' ' -f1 | wc -l)
-        echo "Aktive Bildschirme: $SCREENS"
-    fi
-else
-    echo "Initiales Setup fehlgeschlagen (siehe Logs)"
-fi
-
 echo ""
-echo "╔═══════════════════════════╗"
-echo "║Installation abgeschlossen!║"
-echo "╚═══════════════════════════╝"
+echo "╔═══════════════════════╗"
+echo "║Installation completed!║"
+echo "╚═══════════════════════╝"
 echo ""
-echo "Status prüfen:"
+echo "Check status:"
 echo "systemctl --user status redshift-timestamped.service"
 echo "systemctl --user list-timers --all"
 echo ""
-echo "Logs ansehen:"
+echo "View logs:"
 echo "journalctl --user -t redshift -f"
 echo "journalctl --user -t redshift --since today"
 echo ""
-echo "Zeitplan:"
+echo "Shedule:"
 echo "07:00-19:00 → 6000K (day)"
 echo "19:00-22:00 → 4300K (evening)"
 echo "22:00-07:00 → 3600K (night)"
