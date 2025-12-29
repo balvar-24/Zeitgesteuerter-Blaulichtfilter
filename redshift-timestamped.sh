@@ -1,21 +1,21 @@
 #!/bin/bash
-#Redshift Zeitsteuerung
-#Anpassung des Blaulichtfilters je nach Uhrzeit
+#Redshift time control
+#Adjusts blue light filter according to the time of day
 #7-19  Uhr -> redshift -O 6000
 #19-22 Uhr -> redshift -O 4300
 #22-7  Uhr -> redshift -O 3600
 
-#Fehlerabfang
+#Error handling
 set -euo pipefail
 
-#X11 Umgebung sicherstellen
+#Ensure X11 environment is set
 export DISPLAY="${DISPLAY:-:0}"
 export XAUTHORITY="${XAUTHORITY:-$HOME/.Xauthority}"
 
-#Stunde ermitteln
+#Get the current hour
 HOUR=$(date +%H)
 
-#Logging-Funktionen
+#Logging functions
 log() {
     echo "[$(date +'%H:%M:%S')] $*" | systemd-cat -t redshift -p info 2>/dev/null || echo "[$(date +'%H:%M:%S')] $*"
 }
@@ -24,21 +24,21 @@ log_error() {
     echo "[$(date +'%H:%M:%S')] ERROR: $*" | systemd-cat -t redshift -p err 2>/dev/null || echo "[$(date +'%H:%M:%S')] ERROR: $*" >&2
 }
 
-#Start-Log
+#Start log
 log "=== redshift-timestamped.sh START (HOUR=$HOUR) ==="
 log "Log gestartet..."
 
-#Prüfen ob redshift installiert ist
+#Check if redshift is installed
 if ! command -v redshift >/dev/null 2>&1; then
     log_error "redshift ist nicht installiert"
     exit 1
 fi
 
-#Redshift zurücksetzen
-log "Setze redshift zurück..."
-redshift -x -m randr >/dev/null 2>&1 || log "Warnung: redshift -x fehlgeschlagen (möglicherweise nicht aktiv)"
+#Reset redshift
+log "Resetting..."
+redshift -x -m randr >/dev/null 2>&1 || log "Warning: redshift -x failed (perhaps inactive)"
 
-#Farbtemperatur nach Uhrzeit bestimmen
+#Determine redshift based on the time of day
 if [ "$HOUR" -ge 7 ] && [ "$HOUR" -lt 19 ]; then
     K=6000
     PHASE="day"
@@ -50,12 +50,12 @@ else
     PHASE="night"
 fi
 
-#Phase loggen
-log "Setze Blaulichtfilter: $PHASE (${K}K)"
+#Log phase
+log "Setting blue light filter: $PHASE (${K}K)"
 
-#Redshift setzen
+#Set redshift
 if redshift -O "$K" -m randr >/dev/null 2>&1; then
-    log "Blaulichtfilter gesetzt: ${K}K ($PHASE)"
+    log "Blue light filter set: ${K}K ($PHASE)"
 else
-    log_error "Konnte Blaulichtfilter nicht setzen"
+    log_error "Could not set the blue light filter"
 fi
