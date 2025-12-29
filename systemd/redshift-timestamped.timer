@@ -1,9 +1,9 @@
 [Unit]
-Description=Redshift Zeitsteuerung
+Description=Redshift sheduling
 
 [Timer]
 Unit=redshift-timestamped.service
-#Zeitgesteuerte Ausführungen (20 Sekunden vor tatsächlicher Uhrzeit)
+#Sheduled times to execute
 OnCalendar=*-*-* 07:00:00
 OnCalendar=*-*-* 19:00:00
 OnCalendar=*-*-* 22:00:00
