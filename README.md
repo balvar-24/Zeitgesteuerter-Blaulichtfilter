@@ -22,7 +22,7 @@ which trigger a service that runs a bash script.
 
 ## Installation
 
-1. Clone the GitHub repository: `git clone https://github.com/balvar-24/Zeitgesteuerter-Blaulichtfilter.git`
+1. Clone the GitHub repository: `git clone https://github.com/balvar-24/Scheduled-Blue-Light-Filter.git`
 2. Make `install.sh` and `uninstall.sh` executable: `chmod +x install.sh uninstall.sh`
 3. Run the installation script: `./install.sh` 
 
@@ -55,7 +55,7 @@ die einen Service auslösen, der wiederum ein bash Skript ausführt.
 
 ## Installation:
 
-1. Github-Repo klonen `git clone https://github.com/balvar-24/Zeitgesteuerter-Blaulichtfilter.git`
+1. Github-Repo klonen `git clone https://github.com/balvar-24/Scheduled-Blue-Light-Filter.git`
 2. install.sh/uninstall.sh ausführbar machen `chmod +x install.sh uninstall.sh`
 3. install.sh ausführen `./install.sh` 
 
